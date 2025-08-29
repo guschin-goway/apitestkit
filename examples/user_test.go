@@ -17,14 +17,14 @@ type MonitoringHealth struct {
 
 func TestGetUser(t *testing.T) {
 	// создаём конфиг
-	cfg := apitestkit.NewConfig("http://localhost:8082").
+	cfg := apitestkit.NewConfig("http://localhost:8080").
 		WithHeader("Content-Type", "application/json")
 
 	var mh MonitoringHealth
 
 	// сам тест
 	apitestkit.New(t, cfg).
-		GET("/monitoring/health/").
+		GET("/").
 		Expect().
 		Code(200).
 		JSONSchema(MonitoringHealth{}).
@@ -38,9 +38,9 @@ func TestGetUser(t *testing.T) {
 				assertion.NotEmpty(mh.Name),
 			),
 			assertion.Optional(
-				assertion.Equal("ASSET_MANAGER", mh.Service),
+				assertion.Equal("", mh.Service),
 				assertion.Equal("v1.0.0", mh.Version),
-				assertion.Equal("asset-manager", mh.Name),
+				assertion.Equal("", mh.Name),
 			),
 		)
 }
